@@ -1,6 +1,6 @@
 module Payloadable
-  def serialize_payload(record, serializer)
-    ActiveModelSerializers::SerializableResource.new(record, serializer: serializer, adapter: ActivityPub::Adapter).as_json
+  def serialize_payload(record, serializer, serializer_options = {})
+    ActiveModelSerializers::SerializableResource.new(record, serializer_options.merge(serializer: serializer, adapter: ActivityPub::Adapter)).as_json
   end
 
   def serialize_and_sign_payload(record, serializer, signer, **sign_options)

@@ -124,11 +124,7 @@ class SuspendAccountService < BaseService
   end
 
   def build_reject_json(follow)
-    ActiveModelSerializers::SerializableResource.new(
-      follow,
-      serializer: ActivityPub::RejectFollowSerializer,
-      adapter: ActivityPub::Adapter
-    ).to_json
+    Oj.dump(serialize_payload(follow, ActivityPub::RejectFollowSerializer))
   end
 
   def delivery_inboxes
