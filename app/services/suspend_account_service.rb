@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SuspendAccountService < BaseService
+  include Payloadable
+
   ASSOCIATIONS_ON_SUSPEND = %w(
     account_pins
     active_relationships
@@ -118,15 +120,7 @@ class SuspendAccountService < BaseService
   end
 
   def delete_actor_json
-    return @delete_actor_json if defined?(@delete_actor_json)
-
-    payload = ActiveModelSerializers::SerializableResource.new(
-      @account,
-      serializer: ActivityPub::DeleteActorSerializer,
-      adapter: ActivityPub::Adapter
-    ).as_json
-
-    @delete_actor_json = Oj.dump(ActivityPub::LinkedDataSignature.new(payload).sign!(@account))
+    @delete_actor_json ||= Oj.dump(serialize_and_sign_payload(@account, ActivityPub::DeleteActorSerializer, @account))
   end
 
   def build_reject_json(follow)
