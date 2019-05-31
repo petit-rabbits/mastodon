@@ -44,7 +44,7 @@ class FavouriteService < BaseService
   end
 
   def build_json(favourite)
-    Oj.dump(serialize_and_sign_payload(favourite, ActivityPub::LikeSerializer, favourite.account))
+    Oj.dump(serialize_payload(favourite, ActivityPub::LikeSerializer))
   end
 
   def build_xml(favourite)
