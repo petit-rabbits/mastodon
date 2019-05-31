@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Payloadable
   def serialize_payload(record, serializer, serializer_options = {})
     ActiveModelSerializers::SerializableResource.new(record, serializer_options.merge(serializer: serializer, adapter: ActivityPub::Adapter)).as_json
